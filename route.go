@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/dimaskiddo/go-whatsapp-rest/ctl"
-	"github.com/dimaskiddo/go-whatsapp-rest/hlp/auth"
-	"github.com/dimaskiddo/go-whatsapp-rest/hlp/router"
+	"github.com/edgaru/go-whatsapp-rest/ctl"
+	"github.com/edgaru/go-whatsapp-rest/hlp/auth"
+	"github.com/edgaru/go-whatsapp-rest/hlp/router"
 )
 
 // Initialize Function in Main Route
@@ -23,5 +23,6 @@ func init() {
 	router.Router.With(auth.JWT).Post(router.RouterBasePath+"/send/audio", ctl.WhatsAppSendAudio)
 	router.Router.With(auth.JWT).Post(router.RouterBasePath+"/send/image", ctl.WhatsAppSendImage)
 	router.Router.With(auth.JWT).Post(router.RouterBasePath+"/send/video", ctl.WhatsAppSendVideo)
+	router.Router.With(auth.JWT).Post(router.RouterBasePath+"/exists", ctl.WhatsAppExists)
 	router.Router.With(auth.JWT).Post(router.RouterBasePath+"/logout", ctl.WhatsAppLogout)
 }

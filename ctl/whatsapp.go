@@ -1,15 +1,17 @@
 package ctl
 
 import (
+	"encoding/json"
+	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"strconv"
 	"strings"
 
-	"github.com/dimaskiddo/go-whatsapp-rest/hlp"
-	"github.com/dimaskiddo/go-whatsapp-rest/hlp/auth"
-	"github.com/dimaskiddo/go-whatsapp-rest/hlp/libs"
-	"github.com/dimaskiddo/go-whatsapp-rest/hlp/router"
+	"github.com/edgaru/go-whatsapp-rest/hlp"
+	"github.com/edgaru/go-whatsapp-rest/hlp/auth"
+	"github.com/edgaru/go-whatsapp-rest/hlp/libs"
+	"github.com/edgaru/go-whatsapp-rest/hlp/router"
 )
 
 type reqWhatsAppLogin struct {
@@ -361,4 +363,30 @@ func WhatsAppSendLocation(w http.ResponseWriter, r *http.Request) {
 	resBody.MessageID = id
 
 	router.ResponseSuccessWithData(w, "", resBody)
+}
+
+func WhatsAppExists(w http.ResponseWriter, r *http.Request) {
+	jid, err := auth.GetJWTClaims(r.Header.Get("X-JWT-Claims"))
+	hlp.LogPrintln(hlp.LogLevelWarn, "WhatsAppExists", "JID: "+jid)
+	if err != nil {
+		router.ResponseInternalError(w, err.Error())
+		return
+	}
+
+	var reqBody reqWhatsAppSendMessage
+	_ = json.NewDecoder(r.Body).Decode(&reqBody)
+	body, err := ioutil.ReadAll(r.Body)
+	hlp.LogPrintln(hlp.LogLevelWarn, "WhatsAppExists", "Entra 1 "+string(body)+" --- ")
+	if len(reqBody.MSISDN) == 0 {
+		router.ResponseBadRequest(w, "")
+		return
+	}
+	hlp.LogPrintln(hlp.LogLevelWarn, "WhatsAppExists", "Entra 2 ")
+	data, err := libs.WAExists(jid, reqBody.MSISDN, 1)
+	if err != nil {
+		router.ResponseInternalError(w, err.Error())
+		return
+	}
+
+	router.ResponseSuccessWithData(w, "", data)
 }

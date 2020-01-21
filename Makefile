@@ -28,7 +28,7 @@ release:
 	echo "Release complete please check dist directory."
 
 publish:
-	GITHUB_TOKEN=$(GITHUB_TOKEN) goreleaser --rm-dist
+	GITHUB_TOKEN=$(GITHUB_TOKEN) goreleaser --rm-distl
 	make clean-dist
 	echo "Publish complete please check your repository releases."
 

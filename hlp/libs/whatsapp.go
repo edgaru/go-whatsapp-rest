@@ -14,7 +14,7 @@ import (
 	waproto "github.com/Rhymen/go-whatsapp/binary/proto"
 	qrcode "github.com/skip2/go-qrcode"
 
-	"github.com/dimaskiddo/go-whatsapp-rest/hlp"
+	"github.com/edgaru/go-whatsapp-rest/hlp"
 )
 
 var wac = make(map[string]*whatsapp.Conn)
@@ -566,4 +566,31 @@ func WAMessageLocation(jid string, jidDest string, msgLatitude float64, msgLongi
 	}
 
 	return id, nil
+}
+
+func WAExists(jid string, jidDest string, msgDelay int) (string, error) {
+	if wac[jid] != nil {
+		var ch <-chan string
+
+		<-time.After(time.Duration(msgDelay) * time.Second)
+
+		ch, err := wac[jid].Exist(jidDest + "@s.whatsapp.net")
+
+		if err != nil {
+			switch strings.ToLower(err.Error()) {
+			case "sending message timed out":
+				return "", nil
+			case "could not send proto: failed to write message: error writing to websocket: websocket: close sent":
+				delete(wac, jid)
+				return "", errors.New("connection is invalid al enviar 1")
+			default:
+				return "", err
+			}
+		}
+
+		data := <-ch
+		return data, nil
+	} else {
+		return "", errors.New("connection is invalid al enviar")
+	}
 }

@@ -7,8 +7,8 @@ import (
 
 	jwt "github.com/dgrijalva/jwt-go"
 
-	"github.com/dimaskiddo/go-whatsapp-rest/hlp"
-	"github.com/dimaskiddo/go-whatsapp-rest/hlp/router"
+	"github.com/edgaru/go-whatsapp-rest/hlp"
+	"github.com/edgaru/go-whatsapp-rest/hlp/router"
 )
 
 // ResGetJWT Struct

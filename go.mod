@@ -1,4 +1,4 @@
-module github.com/dimaskiddo/go-whatsapp-rest
+module github.com/edgaru/go-whatsapp-rest
 
 go 1.12
 

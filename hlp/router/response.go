@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/dimaskiddo/go-whatsapp-rest/hlp"
+	"github.com/edgaru/go-whatsapp-rest/hlp"
 )
 
 // ResSuccess Struct
